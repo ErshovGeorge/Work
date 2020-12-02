@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <link rel="stylesheet" href="style.css" type="text/css">
+  <script type="application/javascript">
+
+  function ball(dy) {
+    var canvas = document.getElementById('canvas');
+    if (canvas.getContext){
+      var ctx = canvas.getContext('2d');
+
+      ctx.beginPath();
+      ctx.lineWidth=4;
+
+      ctx.moveTo(500, 0);
+      ctx.lineTo(500, 20);
+      ctx.lineTo(525, 45 + dy * 0.1);
+      ctx.lineTo(475, 75 +  dy * 0.2);
+      ctx.lineTo(525, 100 + dy  * 0.3);
+      ctx.lineTo(475, 125 + dy * 0.4);
+      ctx.lineTo(525, 150 + dy * 0.5);
+      ctx.lineTo(475, 175 + dy * 0.6);
+      ctx.lineTo(525, 200 + dy * 0.7);
+      ctx.lineTo(475, 225 + dy * 0.8);
+      ctx.lineTo(525, 250 + dy * 0.9);
+      ctx.lineTo(500, 275 + dy);
+      ctx.lineTo(500, 300 + dy);
+      ctx.strokeStyle='black';
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(500, 350 + dy, 50, 0, 2*Math.PI, false);
+      ctx.fillStyle = 'red';
+      ctx.fill();
+      ctx.strokeStyle='red';
+      ctx.stroke();
+      }
+    }
+
+
+  function draw() {
+  var canvas = document.getElementById('canvas');
+  if (canvas.getContext){
+    var ctx = canvas.getContext('2d');
+
+    let phi = 0;
+    let m_previos = 0;
+    let g = 9.8;
+
+    function move_ball(){
+    let k = document.getElementById("k").value;
+    let m = document.getElementById("m").value;
+    if (document.getElementById("m").value == "" || document.getElementById("m").value == 0){
+      m = m_previos;
+    }
+
+    let y = 100*Math.sin(Math.sqrt(k/m)*0.01  + phi);
+    phi = Math.sqrt(k/m)*0.01 + phi;
+    let v = Math.sqrt(k/m)*y;
+    let a = k/m * y + g;
+    res = y + v*0.01 + a*0.001/2;
+
+    ctx.clearRect(0, 0, 1000, 1000);
+    ball(res);
+
+    m_previos = m;
+    requestAnimationFrame(move_ball);
+
+  }
+  move_ball();
+ }
+}
+
+
+
+</script>
+</head>
+<body onload="ball(0);">
+ <canvas id="canvas" width="700" height="600"></canvas>
+
+
+
+<form>
+ <div class="outer" align="right">
+ <h3>Маятник</h3>
+  <div calss="form-group">
+    <label for="k">Введите k:</label>
+    <input type="text" class="form-control" id="k">
+  <label for="m">Введите m:</label>
+    <input type="text" class="form-control" id="m">
+  <input type="button" onclick="draw();" value='Пуск!'>
+  </div>
+ </div>
+</form>
+</body>
+</html>
