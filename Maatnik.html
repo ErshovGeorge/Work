@@ -42,9 +42,10 @@
   if (canvas.getContext){
     var ctx = canvas.getContext('2d');
 
-    let phi = 0;
     let m_previos = 0;
     let g = 9.8;
+    let y = 0;
+    let v = 0;
 
     function move_ball(){
     let k = document.getElementById("k").value;
@@ -53,14 +54,11 @@
       m = m_previos;
     }
 
-    let y = 100*Math.sin(Math.sqrt(k/m)*0.01  + phi);
-    phi = Math.sqrt(k/m)*0.01 + phi;
-    let v = Math.sqrt(k/m)*y;
-    let a = k/m * y + g;
-    res = y + v*0.01 + a*0.001/2;
-
+    let a = g - k/m * y;
+    v = v + a * 0.1;
+    y = y + v * 0.1;
     ctx.clearRect(0, 0, 1000, 1000);
-    ball(res);
+    ball(y);
 
     m_previos = m;
     requestAnimationFrame(move_ball);
